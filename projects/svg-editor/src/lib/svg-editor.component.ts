@@ -142,7 +142,6 @@ export class SvgEditorComponent implements OnInit {
   }
 
   svgElementClicked(ele: any, svgElement: any, type: any) {
-    console.log('called ____________________________________ '); // TODO: log!
     this.elementClicked.emit();
   }
 
