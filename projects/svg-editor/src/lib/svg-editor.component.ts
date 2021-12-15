@@ -18,7 +18,6 @@ export class SvgEditorComponent implements OnInit {
   constructor(private sanitized: DomSanitizer) { }
 
   ngOnInit(): void {
-    console.log('svgContent ', this.svgContent); // TODO: log!
     setTimeout(() => {
       this.generateMaskForSvgElements();
     }, 1000);
@@ -26,7 +25,6 @@ export class SvgEditorComponent implements OnInit {
 
   generateMaskForSvgElements() {
     let textElement = document.getElementById('templateSvg')?.querySelectorAll('text');
-    console.log('textElement ' , textElement); // TODO: log!
     textElement?.forEach((svgElement, index) => {
       let _elementId = this.setElementId(svgElement, index, 'text');
 
@@ -47,6 +45,7 @@ export class SvgEditorComponent implements OnInit {
       svgTag.setAttribute('x', (bBox['x'] + bBox['width']).toString());
 
       // Calculate icon position based on text element height
+      console.log('_____ ', bBox['height']); // TODO: log!
       if (bBox['height'] > 30) {
         let _iconSpace = (bBox['height'] - editIconHeight);
         svgTag.setAttribute('y', (bBox['y'] + (_iconSpace / 2)).toString());
