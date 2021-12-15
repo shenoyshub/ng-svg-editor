@@ -70,5 +70,5 @@ describe('SvgEditorComponent', () => {
     const res = component.setElementId(e, 1, 'text');
     expect(res).toBe('text text_1');
   });
-
 });
+
