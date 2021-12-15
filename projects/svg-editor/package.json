@@ -1,6 +1,14 @@
 {
   "name": "svg-editor",
   "version": "0.0.1",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test",
+    "test-cc": "ng test --watch=false --code-coverage && cat ../../coverage/svg-editor/lcov.info |  ../../node_modules/coveralls/bin/coveralls.js"
+  },
   "peerDependencies": {
     "@angular/common": "^12.2.0",
     "@angular/core": "^12.2.0"

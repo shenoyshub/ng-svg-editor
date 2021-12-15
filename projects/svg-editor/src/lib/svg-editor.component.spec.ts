@@ -34,7 +34,7 @@ describe('SvgEditorComponent', () => {
   });
 
   it('should draw edit icon for given SVG file', () => {
-    const _svgString = '<svg height="30" width="200"><text x="0" y="15" fill="red">Sample SVG String</text></svg>';
+    const _svgString = '<svg height="30" width="200"><text x="0" y="15" fill="red">Sample SVG String</text><image href="https://yari-demos.prod.mdn.mozit.cloud/en-US/docs/Web/SVG/Element/image/mdn_logo_only_color.png" height="200" width="200"></image></svg>';
     let _string = component.sanitizeHTML(_svgString);
     component.svgContent = _string as string;
     fixture.detectChanges();
