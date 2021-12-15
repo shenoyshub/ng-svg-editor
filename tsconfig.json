@@ -16,6 +16,12 @@
     "importHelpers": true,
     "target": "es2017",
     "module": "es2020",
+    "paths": {
+      "svg-editor": [
+        "dist/svg-editor/svg-editor",
+        "dist/svg-editor"
+      ]
+    },
     "lib": [
       "es2018",
       "dom"
