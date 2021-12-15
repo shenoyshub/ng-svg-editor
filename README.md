@@ -1,4 +1,7 @@
 # NgSvgEditor
+[![Coverage Status](https://coveralls.io/repos/github/rajeshkumaravel/ng-svg-editor/badge.svg?branch=main_delete)](https://coveralls.io/github/rajeshkumaravel/ng-svg-editor?branch=main_delete)
+
+[![Coverage Status](https://coveralls.io/repos/github/rajeshkumaravel/ng-svg-editor/badge.svg?branch=main)](https://coveralls.io/github/rajeshkumaravel/ng-svg-editor?branch=main)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.3.
 
