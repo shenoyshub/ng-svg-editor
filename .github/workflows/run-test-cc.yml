@@ -37,7 +37,7 @@ jobs:
         run: yarn
 
       - name: Executing test case(s)
-        run: npm run test-cc
+        run: npm run test:ci
 
       - name: Posting LCOV coverage data to Coveralls
         uses: coverallsapp/github-action@master
