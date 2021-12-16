@@ -1,30 +1,28 @@
 # NgSvgEditor
-[![Coverage Status](https://coveralls.io/repos/github/rajeshkumaravel/ng-svg-editor/badge.svg?branch=main_delete)](https://coveralls.io/github/rajeshkumaravel/ng-svg-editor?branch=main_delete)
 
-[![Coverage Status](https://coveralls.io/repos/github/rajeshkumaravel/ng-svg-editor/badge.svg?branch=main)](https://coveralls.io/github/rajeshkumaravel/ng-svg-editor?branch=main)
+[![NG SVG Editor](https://github.com/rajeshkumaravel/ng-svg-editor/actions/workflows/run-test-cc.yml/badge.svg)](https://github.com/rajeshkumaravel/ng-svg-editor/actions/workflows/run-test-cc.yml) ![Coveralls](https://img.shields.io/coveralls/github/rajeshkumaravel/ng-svg-editor?label=Repository) ![Coveralls branch](https://img.shields.io/coveralls/github/rajeshkumaravel/ng-svg-editor/main?label=Branch%3A%20main) ![GitHub](https://img.shields.io/github/license/rajeshkumaravel/ng-svg-editor)
+<p>
+  <img alt="github actions" src="https://img.shields.io/badge/-Github_Actions-2088FF?style=flat-square&logo=github-actions&logoColor=white" height=25 />
+  <img alt="angular" src="https://img.shields.io/badge/-Angular-DD0031?style=flat-square&logo=angular&logoColor=white" height=25 />
+  <img alt="TypeScript" src="https://img.shields.io/badge/-TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white" height=25 />
+</p>
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.3.
+# Quickstart
 
-## Development server
+**1. Install**
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+```
+$ npm install --save PKG_NAME
+```
 
-## Code scaffolding
+#### Options
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+|  |  |  |
+| --- | --- | --- |
+| a | a | **required**
+| a | a | a |
 
-## Build
+# License
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+The PKG_NAME is licensed under the MIT License. See LICENSE for more information.
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
