@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { Subject } from 'rxjs/internal/Subject';
 
 import { SvgEditorComponent } from './svg-editor.component';
 
@@ -17,7 +18,13 @@ describe('SvgEditorComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SvgEditorComponent);
     component = fixture.componentInstance;
+    component.onEdit = new Subject();
     fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    // spyOn(component, 'ngOnDestroy').and.callFake(() => { });
+    fixture.destroy();
   });
 
   it('should create svg editor component', () => {
@@ -90,6 +97,50 @@ describe('SvgEditorComponent', () => {
 
   });
 
+  describe('SVG element update value and redraw icon', () => {
+
+    it('should update `text` SVG element with new value', () => {
+      const _svgString = '<svg height="30" width="200"><text x="0" y="15" font-size="2em" fill="red">Sample SVG String</text><image href="https://yari-demos.prod.mdn.mozit.cloud/en-US/docs/Web/SVG/Element/image/mdn_logo_only_color.png" height="200" width="200"></image></svg>';
+      let _string = component.sanitizeHTML(_svgString);
+      component.svgContent = _string as string;
+      fixture.detectChanges();
+      component.generateMaskForSvgElements();
+      const svgElement = document.getElementById('text_0');
+      const newValue = 'updated text tag value';
+      component.updateSVGTag(svgElement, 'text', newValue);
+      const res = document.getElementById('text_0')?.textContent;
+      expect(res).toEqual(newValue);
+    });
+
+    it('should update `image` SVG element with new value', () => {
+      const _svgString = '<svg height="30" width="200"><text x="0" y="15" font-size="2em" fill="red">Sample SVG String</text><image href="https://yari-demos.prod.mdn.mozit.cloud/en-US/docs/Web/SVG/Element/image/mdn_logo_only_color.png" height="200" width="200"></image></svg>';
+      let _string = component.sanitizeHTML(_svgString);
+      component.svgContent = _string as string;
+      fixture.detectChanges();
+      component.generateMaskForSvgElements();
+      const svgElement = document.getElementById('image_0');
+      const newValue = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFgAAABYBAMAAACDuy0HAAAAG1BMVEX/wQeAgIDvuBafkGG/oEPfsCWvmFLPqDSPiHCaVabLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAdklEQVRIiWNgGAWjYBSMglEwCkYBGUBZWMnQCMZUACJ8ik1UjJ2cYUwDIMKnWIhJUEGRgcGN3QDIFAAiIkzW0FAgwuRAwVBBUQYGljYQMwCIiDCZSZQEN7MZM5Di5gAiTIaGcwowNAiH8ygYBaNgFIyCUTAYAQBzNRHuWxEUOAAAAABJRU5ErkJggg==';
+      component.updateSVGTag(svgElement, 'image', newValue);
+      const res = document.getElementById('image_0')?.getAttribute('xlink:href');
+      expect(res).toEqual(newValue);
+    });
+
+    it('should update `image` SVG element with new value and redraw icon', () => {
+      const _svgString = '<svg height="30" width="200"><text x="0" y="15" font-size="2em" fill="red">Sample SVG String</text><image href="https://yari-demos.prod.mdn.mozit.cloud/en-US/docs/Web/SVG/Element/image/mdn_logo_only_color.png" height="200" width="200"></image></svg>';
+      let _string = component.sanitizeHTML(_svgString);
+      component.svgContent = _string as string;
+      fixture.detectChanges();
+      component.generateMaskForSvgElements();
+      const svgElement = document.getElementById('image_0');
+      const newValue = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFgAAABYBAMAAACDuy0HAAAAG1BMVEX/wQeAgIDvuBafkGG/oEPfsCWvmFLPqDSPiHCaVabLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAdklEQVRIiWNgGAWjYBSMglEwCkYBGUBZWMnQCMZUACJ8ik1UjJ2cYUwDIMKnWIhJUEGRgcGN3QDIFAAiIkzW0FAgwuRAwVBBUQYGljYQMwCIiDCZSZQEN7MZM5Di5gAiTIaGcwowNAiH8ygYBaNgFIyCUTAYAQBzNRHuWxEUOAAAAABJRU5ErkJggg==';
+      component.updateSVGTag(svgElement, 'image', newValue);
+      const updatedSvgElement: any = document?.getElementById('image_0');
+      spyOn(component, 'updateSVGRectBoundary').and.callThrough();
+      component.updateSVGRectBoundary(updatedSvgElement);
+      expect(component.updateSVGRectBoundary).toHaveBeenCalledWith(updatedSvgElement);
+    });
+
+  });
 });
 
 
