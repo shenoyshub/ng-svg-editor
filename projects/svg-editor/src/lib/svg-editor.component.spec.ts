@@ -43,38 +43,51 @@ describe('SvgEditorComponent', () => {
     done();
   });
 
-  it('should draw edit icon for given SVG file', () => {
-    const _svgString = '<svg height="30" width="200"><text x="0" y="15" fill="red">Sample SVG String</text><image href="https://yari-demos.prod.mdn.mozit.cloud/en-US/docs/Web/SVG/Element/image/mdn_logo_only_color.png" height="200" width="200"></image></svg>';
-    let _string = component.sanitizeHTML(_svgString);
-    component.svgContent = _string as string;
-    fixture.detectChanges();
-    const svgElement = document.getElementById('templateSvg');
-    component.generateMaskForSvgElements();
-    expect(svgElement).toBeTruthy();
-    expect(document.querySelectorAll('.svg-edit-icon').length).toEqual(2);
-  });
-
-  it('should draw edit icon for given SVG file for bigger text element', () => {
-    const _svgString = '<svg height="30" width="200"><text x="0" y="15" font-size="2em" fill="red">Sample SVG String</text><image href="https://yari-demos.prod.mdn.mozit.cloud/en-US/docs/Web/SVG/Element/image/mdn_logo_only_color.png" height="200" width="200"></image></svg>';
-    let _string = component.sanitizeHTML(_svgString);
-    component.svgContent = _string as string;
-    fixture.detectChanges();
-    const svgElement = document.getElementById('templateSvg');
-    component.generateMaskForSvgElements();
-    expect(svgElement).toBeTruthy();
-    expect(document.querySelectorAll('.svg-edit-icon').length).toEqual(2);
-  });
-
   it('should set element id for provided element', () => {
     const e = { id: 'text' };
     const res = component.setElementId(e, 1, 'text');
     expect(res).toBe('text text_1');
   });
 
-  it('should call element click output emit event', () => {
-    spyOn(component.elementClicked, 'emit').and.callThrough();
-    component.svgElementClicked(undefined, undefined, undefined);
-    expect(component.elementClicked.emit).toHaveBeenCalledWith();
+  describe('Create mask or draw edit icon for given SVG file input', () => {
+
+    it('should draw edit icon for given SVG file', () => {
+      const _svgString = '<svg height="30" width="200"><text x="0" y="15" fill="red">Sample SVG String</text><image href="https://yari-demos.prod.mdn.mozit.cloud/en-US/docs/Web/SVG/Element/image/mdn_logo_only_color.png" height="200" width="200"></image></svg>';
+      let _string = component.sanitizeHTML(_svgString);
+      component.svgContent = _string as string;
+      fixture.detectChanges();
+      const svgElement = document.getElementById('templateSvg');
+      component.generateMaskForSvgElements();
+      expect(svgElement).toBeTruthy();
+      expect(document.querySelectorAll('.svg-edit-icon').length).toEqual(2);
+    });
+
+    it('should draw edit icon for given SVG file for bigger text element', () => {
+      const _svgString = '<svg height="30" width="200"><text x="0" y="15" font-size="2em" fill="red">Sample SVG String</text><image href="https://yari-demos.prod.mdn.mozit.cloud/en-US/docs/Web/SVG/Element/image/mdn_logo_only_color.png" height="200" width="200"></image></svg>';
+      let _string = component.sanitizeHTML(_svgString);
+      component.svgContent = _string as string;
+      fixture.detectChanges();
+      const svgElement = document.getElementById('templateSvg');
+      component.generateMaskForSvgElements();
+      expect(svgElement).toBeTruthy();
+      expect(document.querySelectorAll('.svg-edit-icon').length).toEqual(2);
+    });
+
+  });
+
+  describe('Element Click methods', () => {
+
+    it('should call element click output emit event', () => {
+      spyOn(component.elementClicked, 'emit').and.callThrough();
+      const svgElement = { id: 'text_0', textContent: 'Sample SVG String' };
+      const type = 'text';
+      component.svgElementClicked(svgElement, type);
+      expect(component.elementClicked.emit).toHaveBeenCalledWith({
+        element: svgElement,
+        type: type
+      });
+    });
+
   });
 
 });

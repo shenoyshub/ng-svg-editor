@@ -116,32 +116,15 @@ export class SvgEditorComponent implements OnInit {
     });
   }
 
-  svgInputModal(ele: any, svgElement: any, type: any) {
-    // if (!this.showPreviewButton) return;
-    // let textElement = document.getElementById(ele.target['id']);
-    // if (type === 'image') {
-    //   this.logoType = { type: 'LOGO', index: 0, key: 'LOGO1' };
-    //   this.browseImage.getAssetList();
-    // }
-    // this.selectedSVGObject = {
-    //   type: type,
-    //   value: svgElement.textContent,
-    //   element: textElement,
-    //   svgElement: svgElement
-    // };
-    // console.table(this.selectedSVGObject); // TODO: log!
-    // this.showSVGInputModal = true;
-  }
-
   svgElementClicked(svgElement: any, type: any) {
     // if (!this.showPreviewButton) return;
-    var selectedSVGObject = {
-      type: type,
-      value: svgElement.textContent,
-      element: svgElement,
-      svgElement: svgElement
-    };
-    console.table(selectedSVGObject); // TODO: log!
+    // var selectedSVGObject = {
+    //   type: type,
+    //   value: svgElement.textContent,
+    //   element: svgElement,
+    //   svgElement: svgElement
+    // };
+    // console.table(selectedSVGObject); // TODO: log!
     this.elementClicked.emit({
       type: type,
       element: svgElement
