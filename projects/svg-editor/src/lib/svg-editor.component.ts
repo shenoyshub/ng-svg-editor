@@ -163,10 +163,9 @@ export class SvgEditorComponent implements OnInit, OnDestroy {
   }
 
   updateSVGRectBoundary(svgElement: SVGElement) {
-    let textElement = document.getElementById(_.get(svgElement, 'id'));
-
+    let element = document.getElementById(_.get(svgElement, 'id'));
     // Determine the coordinates of the text tag
-    let bBox = (textElement as unknown as SVGSVGElement).getBBox();
+    let bBox = (element as unknown as SVGSVGElement).getBBox();
 
     // Update edit icon wrap boundaries for text tag
     let svgTag = document.getElementsByClassName(_.get(svgElement, 'id'));
