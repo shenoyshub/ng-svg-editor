@@ -29,6 +29,7 @@ describe('SvgEditorComponent', () => {
 
   it('should create svg editor component', () => {
     expect(component).toBeTruthy();
+    expect(component.ICON_STRING).toBeDefined();
   });
 
   it('should call ngOnInit', (done) => {
@@ -141,6 +142,40 @@ describe('SvgEditorComponent', () => {
     });
 
   });
+
+  describe('SVG element toggle preview and edit', () => {
+
+    it('should return false for invalid status input', () => {
+      const res = component.toggleSVGPreview('showPreview');
+      expect(res).toBeFalsy();
+    });
+
+    it('should hide edit icon for SVG tags', () => {
+      const _svgString = '<svg height="30" width="200"><text x="0" y="15" font-size="2em" fill="red">Sample SVG String</text><image href="https://yari-demos.prod.mdn.mozit.cloud/en-US/docs/Web/SVG/Element/image/mdn_logo_only_color.png" height="200" width="200"></image></svg>';
+      let _string = component.sanitizeHTML(_svgString);
+      component.svgContent = _string as string;
+      fixture.detectChanges();
+      component.generateMaskForSvgElements();
+      component.toggleSVGPreview('hide');
+      (document.querySelectorAll('.svg-edit-icon') as any).forEach((el: HTMLElement) => {
+        expect(el.style.display).toEqual('none');
+      });
+    });
+
+    it('should hide edit icon for SVG tags', () => {
+      const _svgString = '<svg height="30" width="200"><text x="0" y="15" font-size="2em" fill="red">Sample SVG String</text><image href="https://yari-demos.prod.mdn.mozit.cloud/en-US/docs/Web/SVG/Element/image/mdn_logo_only_color.png" height="200" width="200"></image></svg>';
+      let _string = component.sanitizeHTML(_svgString);
+      component.svgContent = _string as string;
+      fixture.detectChanges();
+      component.generateMaskForSvgElements();
+      component.toggleSVGPreview('show');
+      (document.querySelectorAll('.svg-edit-icon') as any).forEach((el: HTMLElement) => {
+        expect(el.style.display).toEqual('inline');
+      });
+    });
+
+  });
+
 });
 
 

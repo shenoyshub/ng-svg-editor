@@ -17,6 +17,7 @@ export class SvgEditorComponent implements OnInit, OnDestroy {
   @Input() svgContent!: String;
   @Input() onEdit!: Subject<any>;
   @Output() elementClicked = new EventEmitter();
+  @Input() togglePreview!: Subject<any>;
   constructor(private sanitized: DomSanitizer) { }
 
   ngOnInit(): void {
@@ -27,6 +28,12 @@ export class SvgEditorComponent implements OnInit, OnDestroy {
        /* istanbul ignore next */
       this.onEdit.subscribe(data => {
         this.updateSVGTag(_.get(data, 'element'), _.get(data, 'type'), _.get(data, 'value'));
+      });
+    }
+    if (this.togglePreview) {
+      /* istanbul ignore next */
+      this.togglePreview.subscribe((data: string) => {
+        this.toggleSVGPreview(data);
       });
     }
   }
@@ -159,7 +166,6 @@ export class SvgEditorComponent implements OnInit, OnDestroy {
    * - Once new value are updated to respective tags; 
    * - - `updateSVGRectBoundary` is called for redrawing icon position
    */
-
   updateSVGTag(element: any, type: string, value: string) {
     const _element = document?.getElementById(_.get(element, 'id'));
     if (_element && type === 'text') {
@@ -188,6 +194,26 @@ export class SvgEditorComponent implements OnInit, OnDestroy {
     svgTag[0].setAttribute('y', (bBox['y']).toString());
     svgTag[0].setAttribute('height', '50');
     svgTag[0].setAttribute('width', '50');
+  }
+
+  /**
+   * @param  {string} data  - String whether to show / hide edit icon
+   * @description
+   * - Function to toggle show / hide edit icon
+   */
+  toggleSVGPreview (data: string) {
+    if (typeof data !== 'string') return false;
+    if (data === 'show') {
+      (document.querySelectorAll('.svg-edit-icon') as any).forEach((el: HTMLElement) => {
+        el.style.display = 'inline';
+      });
+    } else if (data === 'hide') {
+      (document.querySelectorAll('.svg-edit-icon') as any).forEach((el: HTMLElement) => {
+        el.style.display = 'none';
+      });
+    } else {
+      return false;
+    }
   }
 }
 
