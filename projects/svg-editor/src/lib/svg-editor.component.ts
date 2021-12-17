@@ -24,6 +24,7 @@ export class SvgEditorComponent implements OnInit, OnDestroy {
       this.generateMaskForSvgElements();
     }, 1000);
     if (this.onEdit) {
+       /* istanbul ignore next */
       this.onEdit.subscribe(data => {
         this.updateSVGTag(_.get(data, 'element'), _.get(data, 'type'), _.get(data, 'value'));
       });
@@ -34,6 +35,11 @@ export class SvgEditorComponent implements OnInit, OnDestroy {
     this.onEdit.unsubscribe();
   }
 
+  /**
+   * @description
+   * - Function to iterate `text` and `image` elements in SVG file
+   * - Add edit icon to text and image elements in SVG file
+   */
   generateMaskForSvgElements() {
     let textElement = document.getElementById('templateSvg')?.querySelectorAll('text');
     textElement?.forEach((svgElement, index) => {
@@ -41,35 +47,8 @@ export class SvgEditorComponent implements OnInit, OnDestroy {
 
       // Pen icon height
       let editIconHeight = 25;
-
       // Set custom id for SVG element
       svgElement.setAttribute('id', _elementId);
-
-      // Determine the coordinates of the text tag
-      let bBox = (svgElement as unknown as SVGSVGElement).getBBox();
-
-      // Create pen icon wrap for text
-      let svgTag = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-      svgTag.setAttribute('x', (bBox['x'] + bBox['width']).toString());
-
-      // Calculate icon position based on text element height
-      if (bBox['height'] > 30) {
-        let _iconSpace = (bBox['height'] - editIconHeight);
-        svgTag.setAttribute('y', (bBox['y'] + (_iconSpace / 2)).toString());
-      } else {
-        svgTag.setAttribute('y', (bBox['y']).toString());
-      }
-      svgTag.setAttribute('height', '50');
-      svgTag.setAttribute('width', '50');
-      svgTag.setAttribute('class', 'svg-edit-icon ' + _elementId);
-
-      let editIconPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      editIconPath.setAttribute('id', 'pathIdD');
-      editIconPath.setAttribute('d', this.ICON_STRING);
-      editIconPath.setAttribute('opacity', '1');
-      editIconPath.setAttribute('fill', 'red');
-
-      svgTag.append(editIconPath);
       // Add event listener for text
       svgElement.addEventListener('click', (e) => {
         // Modal popup for text input
@@ -77,7 +56,7 @@ export class SvgEditorComponent implements OnInit, OnDestroy {
       });
 
       // Add pen icon to SVG DOM to end of text tag
-      svgElement?.parentNode?.insertBefore(svgTag, svgElement);
+      svgElement?.parentNode?.insertBefore(this.createEditIcon(svgElement, editIconHeight, _elementId), svgElement);
     });
 
     let imageElements = document.getElementById('templateSvg')?.querySelectorAll('image');
@@ -86,35 +65,8 @@ export class SvgEditorComponent implements OnInit, OnDestroy {
 
       // Pen icon height
       let editIconHeight = 25;
-
       // Set custom id for SVG element
       imageElement.setAttribute('id', _elementId);
-
-      // Determine the coordinates of the image tag
-      let bBox = (imageElement as unknown as SVGSVGElement).getBBox();
-
-      // Create pen icon wrap for text
-      let svgTag = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-      svgTag.setAttribute('x', (bBox['x'] + bBox['width']).toString());
-
-      // Calculate icon position based on image element height
-      if (bBox['height'] > 30) {
-        let _iconSpace = (bBox['height'] - editIconHeight);
-        svgTag.setAttribute('y', (bBox['y'] + (_iconSpace / 2)).toString());
-      } else {
-        svgTag.setAttribute('y', (bBox['y']).toString());
-      }
-      svgTag.setAttribute('height', '50');
-      svgTag.setAttribute('width', '50');
-      svgTag.setAttribute('class', 'svg-edit-icon ' + _elementId);
-
-      let editIconPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      editIconPath.setAttribute('id', 'pathIdD');
-      editIconPath.setAttribute('d', this.ICON_STRING);
-      editIconPath.setAttribute('opacity', '1');
-      editIconPath.setAttribute('fill', 'red');
-
-      svgTag.append(editIconPath);
       // Add event listener for image
       imageElement.addEventListener('click', (e) => {
         // Modal popup for image input
@@ -122,34 +74,91 @@ export class SvgEditorComponent implements OnInit, OnDestroy {
       });
 
       // Add pen icon to SVG DOM to end of image tag
-      imageElement?.parentNode?.insertBefore(svgTag, imageElement);
+      imageElement?.parentNode?.insertBefore(this.createEditIcon(imageElement, editIconHeight, _elementId), imageElement);
     });
   }
 
-  svgElementClicked(svgElement: any, type: any) {
-    // if (!this.showPreviewButton) return;
-    // var selectedSVGObject = {
-    //   type: type,
-    //   value: svgElement.textContent,
-    //   element: svgElement,
-    //   svgElement: svgElement
-    // };
-    // console.table(selectedSVGObject); // TODO: log!
+  /**
+   * @param  {SVGElement} svgElement  - SVG element
+   * @param  {number} editIconHeight  - Edit icon height
+   * @param  {string} _elementId      - `id` for SVG element
+   * @description                     - Function to construct SVG edit icon
+   * @returns                         - SVG element with edit icon
+   */
+  createEditIcon(svgElement: SVGElement, editIconHeight: number, _elementId: string) {
+    let bBox = (svgElement as unknown as SVGSVGElement).getBBox();
+
+    // Create pen icon wrap for text
+    let svgTag = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svgTag.setAttribute('x', (bBox['x'] + bBox['width']).toString());
+
+    // Calculate icon position based on text element height
+    if (bBox['height'] > 30) {
+      let _iconSpace = (bBox['height'] - editIconHeight);
+      svgTag.setAttribute('y', (bBox['y'] + (_iconSpace / 2)).toString());
+    } else {
+      svgTag.setAttribute('y', (bBox['y']).toString());
+    }
+    svgTag.setAttribute('height', '50');
+    svgTag.setAttribute('width', '50');
+    svgTag.setAttribute('class', 'svg-edit-icon ' + _elementId);
+
+    let editIconPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    editIconPath.setAttribute('id', 'pathIdD');
+    editIconPath.setAttribute('d', this.ICON_STRING);
+    editIconPath.setAttribute('opacity', '1');
+    editIconPath.setAttribute('fill', 'red');
+    svgTag.append(editIconPath);
+    return svgTag;
+  }
+
+  /**
+   * @param  {SVGElement} svgElement - SVG element which is clicked
+   * @param  {string} type           - Type of element (text / image)
+   * @description
+   * - Function to emit Output event when user click on SVG element
+   */
+  svgElementClicked(svgElement: any, type: string) {
     this.elementClicked.emit({
       type: type,
       element: svgElement
     });
   }
 
-  setElementId(e: any, index: any, type: any) {
+  /**
+   * @param  {SVGElement} e   - SVG element
+   * @param  {number} index   - Index of an element in SVG elements node
+   * @param  {string} type    - Type of element (text / image)
+   * @description             - Function to set `id` for element
+   * @returns {string}        - `id` for an element
+   */
+  setElementId(e: any, index: number, type: string) {
     return _.get(e, 'id') ?
       _.get(e, 'id') + ' ' + type + '_' + index :
       type + '_' + index;
   }
 
+  /**
+   * @param  {any} html - SVG file string
+   * @description
+   * - ̌DomSanitizer helps preventing Cross Site Scripting Security bugs (XSS)
+   * - by sanitizing values to be safe to use in the different DOM contexts
+   * @returns {string}  - Return SGV file with scripts tag executable
+   */
   sanitizeHTML(html: any) {
     return this.sanitized.bypassSecurityTrustHtml(html);
   }
+
+  /**
+   * @param  {SVGElement} element - SVG element
+   * @param  {string} type        - Type of element (text / image)
+   * @param  {string} value       - Either updated text value or image href value (URL path / Base64 string)
+   * @description
+   * - Function to modify the provided SVG element with new value
+   * - In case of image element; `href` and `xlink:href` both are updated with new value
+   * - Once new value are updated to respective tags; 
+   * - - `updateSVGRectBoundary` is called for redrawing icon position
+   */
 
   updateSVGTag(element: any, type: string, value: string) {
     const _element = document?.getElementById(_.get(element, 'id'));
@@ -158,10 +167,16 @@ export class SvgEditorComponent implements OnInit, OnDestroy {
     }
     if (_element && type === 'image')  {
       _element.setAttribute('xlink:href', value);
+      _element.setAttribute('href', value);
     }
     this.updateSVGRectBoundary(element);
   }
 
+  /**
+   * @param  {SVGElement} svgElement - SVG element
+   * @description
+   * - Function to update edit icon with new position based on updated value dimensions
+   */
   updateSVGRectBoundary(svgElement: SVGElement) {
     let element = document.getElementById(_.get(svgElement, 'id'));
     // Determine the coordinates of the text tag

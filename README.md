@@ -17,7 +17,7 @@ $ npm install --save PKG_NAME
 
 #### Options
 
-|  |  |  |
+| Key | Description | |
 | --- | --- | --- |
 | a | a | **required**
 | a | a | a |
