@@ -29,7 +29,7 @@ describe('SvgEditorComponent', () => {
 
   it('should create svg editor component', () => {
     expect(component).toBeTruthy();
-    expect(component.ICON_STRING).toBeDefined();
+    expect(component.icon).toBeDefined();
   });
 
   it('should call ngOnInit', (done) => {
