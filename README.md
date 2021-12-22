@@ -28,7 +28,7 @@ This project is licensed under the MIT License. See LICENSE for more information
 ### Installation
 
 ```
-$ npm install --save PKG_NAME
+$ npm install --save ng-svg-editor
 ```
 
 ### Import in Angular
