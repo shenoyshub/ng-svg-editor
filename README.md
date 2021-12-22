@@ -20,7 +20,7 @@ $ npm install --save PKG_NAME
 | Key | Description | |
 | --- | --- | --- |
 | a | a | **required**
-| a | a | a |
+| a | a | **required** |
 
 # License
 
