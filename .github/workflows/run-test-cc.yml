@@ -1,8 +1,5 @@
-# This is a basic workflow to help you get started with Actions
+name: NG SVG Editor
 
-name: CI
-
-# Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
@@ -10,24 +7,26 @@ on:
   pull_request:
     branches: [ main_delete ]
 
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
+
+  run_test_code_coverage:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x]
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Use Node 12.x
+      - name: Using Node Version ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
-          node-version: '12.x'
+          node-version: ${{ matrix.node-version }}
 
       - name: Installing yarn
         run: npm install -g yarn
@@ -37,10 +36,11 @@ jobs:
         run: yarn
 
       - name: Executing test case(s)
-        run: npm run test-cc
+        run: npm run test:ci
 
       - name: Posting LCOV coverage data to Coveralls
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
+          path-to-lcov: ./coverage/svg-editor/lcov.info
      
