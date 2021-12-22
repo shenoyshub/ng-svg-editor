@@ -3,9 +3,9 @@ name: NG SVG Editor
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ main_delete ]
+    branches: [ main ]
   pull_request:
-    branches: [ main_delete ]
+    branches: [ main ]
 
   workflow_dispatch:
 
