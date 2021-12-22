@@ -7,18 +7,21 @@
   <img alt="TypeScript" src="https://img.shields.io/badge/-TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white" height=25 />
 </p>
 
-ng-svg-editor is a lightweight and very complete Angular library for editing SVG template inside any Angular project. It was built for modern browsers using TypeScript, HTML5 and Angular >=12.x.x.
+`ng-svg-editor` is a lightweight and very complete Angular library for editing SVG template inside any Angular project. It was built for modern browsers using TypeScript, HTML5 and Angular >=12.x.x.
 
 ---
 ## Getting started
 How to use svg editor in your projects
+
+## License
+
+This project is licensed under the MIT License. See LICENSE for more information.
 ## Table of contents
 
 - [Installation](#installation)
 - [Import in Angular](#import-in-angular)
 - [Options](#options)
 - [Handle events](#handle-events)
-- [Testing](#testing)
 ---
 
 ### Installation
@@ -191,8 +194,3 @@ export class AppComponent {
   }
 }
 ```
-
-# License
-
-The PKG_NAME is licensed under the MIT License. See LICENSE for more information.
-
