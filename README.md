@@ -9,6 +9,7 @@
 
 `ng-svg-editor` is a lightweight and very complete Angular library for editing SVG template inside any Angular project. It was built for modern browsers using TypeScript, HTML5 and Angular >=12.x.x.
 
+
 ---
 ## Getting started
 How to use svg editor in your projects
