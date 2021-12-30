@@ -1,6 +1,6 @@
 {
   "name": "ng-svg-editor",
-  "version": "0.0.4",
+  "version": "0.0.13",
   "author": "Rajesh Kumaravel",
   "scripts": {
     "ng": "ng",
@@ -20,6 +20,7 @@
     "type": "git",
     "url": "git+https://github.com/rajeshkumaravel/ng-svg-editor.git"
   },
+  "keywords": ["svg editor", "angular svg editor", "ng svg editor"],
   "license": "MIT",
   "homepage": "https://github.com/rajeshkumaravel/ng-svg-editor#readme"
 }

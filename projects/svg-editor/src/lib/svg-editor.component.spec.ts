@@ -57,6 +57,16 @@ describe('SvgEditorComponent', () => {
     expect(res).toBe('text text_1');
   });
 
+  it('should check for string whether starts with restricted charaters or not', () => {
+   const res = component.isStringEditable('$Sample Text');
+   expect(res).toBeFalsy();
+  });
+
+  it('should check for string whether starts with restricted charaters or not', () => {
+    const res = component.isStringEditable('Sample Text');
+    expect(res).toBeTruthy();
+   });
+
   describe('Create mask or draw edit icon for given SVG file input', () => {
 
     it('should draw edit icon for given SVG file', () => {
@@ -79,6 +89,31 @@ describe('SvgEditorComponent', () => {
       component.generateMaskForSvgElements();
       expect(svgElement).toBeTruthy();
       expect(document.querySelectorAll('.svg-edit-icon').length).toEqual(2);
+    });
+
+    it('should add not allowed cursor and not add edit icon to SVG file', () => {
+      const _svgString = '<svg height="30" width="200"><text x="0" y="15" fill="red">$Sample SVG String</text><image href="https://yari-demos.prod.mdn.mozit.cloud/en-US/docs/Web/SVG/Element/image/mdn_logo_only_color.png" height="200" width="200"></image></svg>';
+      let _string = component.sanitizeHTML(_svgString);
+      component.svgContent = _string as string;
+      fixture.detectChanges();
+      const svgElement = document.getElementById('templateSvg');
+      component.generateMaskForSvgElements();
+      expect(svgElement).toBeTruthy();
+      expect(document.querySelectorAll('.svg-edit-icon').length).toEqual(1);
+      expect(document.getElementById('text_0')?.style.cursor).toEqual('not-allowed');
+    });
+
+    it('should add pointer icon to text and images in SVG file', () => {
+      const _svgString = '<svg height="30" width="200"><text x="0" y="15" fill="red">Sample SVG String</text><image href="https://yari-demos.prod.mdn.mozit.cloud/en-US/docs/Web/SVG/Element/image/mdn_logo_only_color.png" height="200" width="200"></image></svg>';
+      let _string = component.sanitizeHTML(_svgString);
+      component.svgContent = _string as string;
+      fixture.detectChanges();
+      const svgElement = document.getElementById('templateSvg');
+      component.generateMaskForSvgElements();
+      expect(svgElement).toBeTruthy();
+      expect(document.querySelectorAll('.svg-edit-icon').length).toEqual(2);
+      expect(document.getElementById('text_0')?.style.cursor).toEqual('pointer');
+      expect(document.getElementById('image_0')?.style.cursor).toEqual('pointer');
     });
 
   });

@@ -18,6 +18,7 @@ export class SvgEditorComponent implements OnInit, OnDestroy {
   @Input() onEdit!: Subject<any>;
   @Output() elementClicked = new EventEmitter();
   @Input() togglePreview!: Subject<any>;
+  @Input() restrict: Array<string> = ['$', '{'];
   constructor(private sanitized: DomSanitizer) { }
 
   ngOnInit(): void {
@@ -57,13 +58,18 @@ export class SvgEditorComponent implements OnInit, OnDestroy {
       // Set custom id for SVG element
       svgElement.setAttribute('id', _elementId);
       // Add event listener for text
-      svgElement.addEventListener('click', (e) => {
-        // Modal popup for text input
-        this.svgElementClicked(svgElement, 'text');
-      });
-
-      // Add pen icon to SVG DOM to end of text tag
-      svgElement?.parentNode?.insertBefore(this.createEditIcon(svgElement, editIconHeight, _elementId), svgElement);
+      if (this.isStringEditable(_.get(svgElement, 'textContent'))) {
+        svgElement.style.cursor = 'pointer';
+        svgElement.addEventListener('click', (e) => {
+          // Modal popup for text input
+          this.svgElementClicked(svgElement, 'text');
+        });
+        
+        // Add pen icon to SVG DOM to end of text tag
+        svgElement?.parentNode?.insertBefore(this.createEditIcon(svgElement, editIconHeight, _elementId), svgElement);
+      } else {
+        svgElement.style.cursor = 'not-allowed';
+      }
     });
 
     let imageElements = document.getElementById('templateSvg')?.querySelectorAll('image');
@@ -75,6 +81,7 @@ export class SvgEditorComponent implements OnInit, OnDestroy {
       // Set custom id for SVG element
       imageElement.setAttribute('id', _elementId);
       // Add event listener for image
+      imageElement.style.cursor = 'pointer';
       imageElement.addEventListener('click', (e) => {
         // Modal popup for image input
         this.svgElementClicked(imageElement, 'image');
@@ -169,7 +176,11 @@ export class SvgEditorComponent implements OnInit, OnDestroy {
   updateSVGTag(element: any, type: string, value: string) {
     const _element = document?.getElementById(_.get(element, 'id'));
     if (_element && type === 'text') {
-      _element.textContent = value;
+      if (this.isStringEditable(value)) {
+        _element.textContent = value;
+      } else {
+        alert('Updated value starts with restricted characters ' + this.restrict);
+      }
     }
     if (_element && type === 'image')  {
       _element.setAttribute('xlink:href', value);
@@ -214,6 +225,16 @@ export class SvgEditorComponent implements OnInit, OnDestroy {
     } else {
       return false;
     }
+  }
+
+  /**
+   * @param  {any} textString - String to be validated
+   * @description
+   * Function to check whether string is starting with restricted characters or not
+   */
+  isStringEditable(textString: any) {
+    const startsWith = textString.split('')[0];
+    return this.restrict.indexOf(startsWith) == -1;
   }
 }
 

@@ -8,6 +8,13 @@
     "strictNullChecks": false
   },
   "angularCompilerOptions": {
-    "compilationMode": "partial"
+    "compilationMode": "partial",
+    "strictTemplates": true,
+    "skipTemplateCodegen": true,
+    "skipMetadataEmit": false,
+    "strictMetadataEmit": true,
+    "annotationsAs": "decorators",
+    "fullTemplateTypeCheck": false,
+    "enableIvy": false
   }
 }
