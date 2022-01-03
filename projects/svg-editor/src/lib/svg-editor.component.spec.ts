@@ -19,6 +19,7 @@ describe('SvgEditorComponent', () => {
     fixture = TestBed.createComponent(SvgEditorComponent);
     component = fixture.componentInstance;
     component.onEdit = new Subject();
+    component.save = new Subject();
     fixture.detectChanges();
   });
 
@@ -178,7 +179,7 @@ describe('SvgEditorComponent', () => {
 
   });
 
-  describe('SVG element toggle preview and edit', () => {
+  describe('SVG element toggle preview, edit and save', () => {
 
     it('should return false for invalid status input', () => {
       const res = component.toggleSVGPreview('showPreview');
@@ -209,6 +210,17 @@ describe('SvgEditorComponent', () => {
       });
     });
 
+    it('should remove edit icons', () => {
+      const _svgString = '<svg height="30" width="200"><text x="0" y="15" font-size="2em" fill="red">Sample SVG String</text><image href="https://yari-demos.prod.mdn.mozit.cloud/en-US/docs/Web/SVG/Element/image/mdn_logo_only_color.png" height="200" width="200"></image></svg>';
+      let _string = component.sanitizeHTML(_svgString);
+      component.svgContent = _string as string;
+      fixture.detectChanges();
+      component.generateMaskForSvgElements();
+      component.saveSVG('');
+      let totalIcons = (document.querySelectorAll('.svg-edit-icon') as any).length;
+      expect(totalIcons).toEqual(0);
+      expect(component.enableEdit).toBeFalse();
+    });
   });
 
 });

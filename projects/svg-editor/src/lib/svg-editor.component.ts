@@ -16,9 +16,11 @@ export class SvgEditorComponent implements OnInit, OnDestroy, OnChanges {
   @Input() icon: string = 'M 18.414062 2 C 18.158062 2 17.902031 2.0979687 17.707031 2.2929688 L 5 15 C 5 15 6.005 15.005 6.5 15.5 C 6.995 15.995 6.984375 16.984375 6.984375 16.984375 C 6.984375 16.984375 8.003 17.003 8.5 17.5 C 8.997 17.997 9 19 9 19 L 21.707031 6.2929688 C 22.098031 5.9019687 22.098031 5.2689063 21.707031 4.8789062 L 19.121094 2.2929688 C 18.926094 2.0979688 18.670063 2 18.414062 2 z M 18.414062 4.4140625 L 19.585938 5.5859375 L 18.537109 6.6347656 L 17.365234 5.4628906 L 18.414062 4.4140625 z M 15.951172 6.8769531 L 17.123047 8.0488281 L 9.4609375 15.710938 C 9.2099375 15.538938 8.9455469 15.408594 8.6855469 15.308594 C 8.5875469 15.050594 8.4590625 14.789063 8.2890625 14.539062 L 15.951172 6.8769531 z M 3.6699219 17 L 3 21 L 7 20.330078 L 3.6699219 17 z';
   @Input() svgContent!: String;
   @Input() onEdit!: Subject<any>;
+  @Input() save!: Subject<any>;
   @Output() elementClicked = new EventEmitter();
   @Input() togglePreview!: Subject<any>;
   @Input() restrict: Array<string> = ['$', '{'];
+  enableEdit: boolean = true;
   constructor(private sanitized: DomSanitizer) { }
 
   ngOnInit(): void {
@@ -37,16 +39,23 @@ export class SvgEditorComponent implements OnInit, OnDestroy, OnChanges {
         this.toggleSVGPreview(data);
       });
     }
+    if (this.save) {
+      /* istanbul ignore next */
+      this.save.subscribe((data: string) => {
+        this.saveSVG(data);
+      });
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    setTimeout(() => {
-      this.generateMaskForSvgElements();
-    }, 1000);
+    // setTimeout(() => {
+    //   this.generateMaskForSvgElements();
+    // }, 1000);
   }
 
   ngOnDestroy() {
     this.onEdit.unsubscribe();
+    this.save.unsubscribe();
   }
 
   /**
@@ -139,10 +148,12 @@ export class SvgEditorComponent implements OnInit, OnDestroy, OnChanges {
    * - Function to emit Output event when user click on SVG element
    */
   svgElementClicked(svgElement: any, type: string) {
-    this.elementClicked.emit({
-      type: type,
-      element: svgElement
-    });
+    if (this.enableEdit) {
+      this.elementClicked.emit({
+        type: type,
+        element: svgElement
+      });
+    }
   }
 
   /**
@@ -242,5 +253,24 @@ export class SvgEditorComponent implements OnInit, OnDestroy, OnChanges {
     const startsWith = textString.split('')[0];
     return this.restrict.indexOf(startsWith) == -1;
   }
-}
 
+  /**
+   * @param  {string} data - String
+   * @description
+   * Function to remove all edit icon elements and disable edit on fields
+   */
+  saveSVG(data: string) {
+    this.enableEdit = false;
+    let textElement = document.getElementById('templateSvg')?.querySelectorAll('text');
+    textElement?.forEach((svgElement, index) => {
+      svgElement.style.cursor = 'default';
+    });
+    let imageElements = document.getElementById('templateSvg')?.querySelectorAll('image');
+    imageElements?.forEach((imageElement, index) => {
+      imageElement.style.cursor = 'default';
+    });
+    (document.querySelectorAll('.svg-edit-icon') as any).forEach((el: HTMLElement) => {
+      el.remove();
+    });
+  }
+}
