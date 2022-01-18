@@ -17,6 +17,7 @@ export class SvgEditorComponent implements OnInit, OnDestroy, OnChanges {
   @Input() svgContent!: String;
   @Input() onEdit!: Subject<any>;
   @Input() save!: Subject<any>;
+  @Input() refreshEditor!: Subject<any>;
   @Output() elementClicked = new EventEmitter();
   @Input() togglePreview!: Subject<any>;
   @Input() restrict: Array<string> = ['$', '{'];
@@ -43,6 +44,14 @@ export class SvgEditorComponent implements OnInit, OnDestroy, OnChanges {
       /* istanbul ignore next */
       this.save.subscribe((data: string) => {
         this.saveSVG(data);
+      });
+    }
+    if (this.refreshEditor) {
+      /* istanbul ignore next */
+      this.refreshEditor.subscribe(() => {
+        setTimeout(() => {
+          this.generateMaskForSvgElements();
+        }, 1000);
       });
     }
   }
