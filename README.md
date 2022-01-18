@@ -14,6 +14,13 @@
 ## Getting started
 How to use svg editor in your projects
 
+## Using library locally
+Run the below command and use npm link under `dist/svg-editor` folder in your application
+
+```console
+npm run watch
+```
+
 ## License
 
 This project is licensed under the MIT License. See LICENSE for more information.
