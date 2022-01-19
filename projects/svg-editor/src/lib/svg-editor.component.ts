@@ -65,7 +65,7 @@ export class SvgEditorComponent implements OnInit, OnDestroy, OnChanges {
   ngOnDestroy() {
     this.edit.unsubscribe();
     this.save.unsubscribe();
-    this.refreshEditor.unsubscribe();
+    if (this.refreshEditor) this.refreshEditor.unsubscribe();
   }
 
   /**
