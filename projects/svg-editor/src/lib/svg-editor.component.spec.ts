@@ -18,7 +18,7 @@ describe('SvgEditorComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SvgEditorComponent);
     component = fixture.componentInstance;
-    component.onEdit = new Subject();
+    component.edit = new Subject();
     component.save = new Subject();
     fixture.detectChanges();
   });
