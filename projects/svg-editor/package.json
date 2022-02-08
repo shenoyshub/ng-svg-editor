@@ -1,6 +1,6 @@
 {
   "name": "ng-svg-editor",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "author": "Rajesh Kumaravel",
   "scripts": {
     "ng": "ng",

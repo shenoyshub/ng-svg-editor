@@ -75,46 +75,48 @@ export class SvgEditorComponent implements OnInit, OnDestroy, OnChanges {
    */
   generateMaskForSvgElements() {
     let textElement = document.getElementById('templateSvg')?.querySelectorAll('text');
-    textElement?.forEach((svgElement, index) => {
-      let _elementId = this.setElementId(svgElement, index, 'text');
-
-      // Pen icon height
-      let editIconHeight = 25;
-      // Set custom id for SVG element
-      svgElement.setAttribute('id', _elementId);
-      // Add event listener for text
-      if (this.isStringEditable(_.get(svgElement, 'textContent'))) {
-        svgElement.style.cursor = 'pointer';
-        svgElement.addEventListener('click', (e) => {
-          // Modal popup for text input
-          this.svgElementClicked(svgElement, 'text');
-        });
-        
-        // Add pen icon to SVG DOM to end of text tag
-        svgElement?.parentNode?.insertBefore(this.createEditIcon(svgElement, editIconHeight, _elementId), svgElement);
-      } else {
-        svgElement.style.cursor = 'not-allowed';
-      }
-    });
-
-    let imageElements = document.getElementById('templateSvg')?.querySelectorAll('image');
-    imageElements?.forEach((imageElement, index) => {
-      let _elementId = this.setElementId(imageElement, index, 'image');
-
-      // Pen icon height
-      let editIconHeight = 25;
-      // Set custom id for SVG element
-      imageElement.setAttribute('id', _elementId);
-      // Add event listener for image
-      imageElement.style.cursor = 'pointer';
-      imageElement.addEventListener('click', (e) => {
-        // Modal popup for image input
-        this.svgElementClicked(imageElement, 'image');
+    if (document.getElementsByClassName('svg-edit-icon').length == 0) {
+      textElement?.forEach((svgElement, index) => {
+        let _elementId = this.setElementId(svgElement, index, 'text');
+  
+        // Pen icon height
+        let editIconHeight = 25;
+        // Set custom id for SVG element
+        svgElement.setAttribute('id', _elementId);
+        // Add event listener for text
+        if (this.isStringEditable(_.get(svgElement, 'textContent'))) {
+          svgElement.style.cursor = 'pointer';
+          svgElement.addEventListener('click', (e) => {
+            // Modal popup for text input
+            this.svgElementClicked(svgElement, 'text');
+          });
+          
+          // Add pen icon to SVG DOM to end of text tag
+          svgElement?.parentNode?.insertBefore(this.createEditIcon(svgElement, editIconHeight, _elementId), svgElement);
+        } else {
+          svgElement.style.cursor = 'not-allowed';
+        }
       });
-
-      // Add pen icon to SVG DOM to end of image tag
-      imageElement?.parentNode?.insertBefore(this.createEditIcon(imageElement, editIconHeight, _elementId), imageElement);
-    });
+  
+      let imageElements = document.getElementById('templateSvg')?.querySelectorAll('image');
+      imageElements?.forEach((imageElement, index) => {
+        let _elementId = this.setElementId(imageElement, index, 'image');
+  
+        // Pen icon height
+        let editIconHeight = 25;
+        // Set custom id for SVG element
+        imageElement.setAttribute('id', _elementId);
+        // Add event listener for image
+        imageElement.style.cursor = 'pointer';
+        imageElement.addEventListener('click', (e) => {
+          // Modal popup for image input
+          this.svgElementClicked(imageElement, 'image');
+        });
+  
+        // Add pen icon to SVG DOM to end of image tag
+        imageElement?.parentNode?.insertBefore(this.createEditIcon(imageElement, editIconHeight, _elementId), imageElement);
+      });
+    }
   }
 
   /**
